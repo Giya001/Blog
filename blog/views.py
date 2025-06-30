@@ -15,4 +15,4 @@ def home(request):
         'c': c,
         'blogs': Blog.objects.all()
     }
-    return render(request,'base.html',context=context)
+    return render(request,'blog/home.html',context=context)
