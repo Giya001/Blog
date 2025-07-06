@@ -22,7 +22,7 @@ def detail(request, blog_id):
 def update(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
     if request.method == 'POST':
-        form = BLogForms(request.POST, request.FILES,instance=blog)
+        form = BLogForms(request.POST, request.FILES, instance=blog)
         if form.is_valid():
             form.save()
             return redirect('home')
@@ -30,3 +30,22 @@ def update(request, blog_id):
         form = BLogForms(instance=blog)
 
     return render(request, 'blog/update.html', {'form': form, 'blog': blog})
+
+
+def create(request):
+    if request.method == 'POST':
+        form = BLogForms(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = BLogForms()
+    context = {
+        'form': form
+    }
+
+    return render(request, 'blog/create.html', context=context)
+
+
+def delete(request, blog_id):
+    return None
