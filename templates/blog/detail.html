@@ -5,9 +5,30 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Detail</h1>
     <h3>{{ blog.title }}</h3>
-    <p>{{ blog.content }}</p>
-    <img src="{{ blog.photo.url }}" alt="rasm">
+    <span class="fw-bold"><i class="bi bi-person"></i>{{ blog.author }}</span>
+    &nbsp;
+    |
+    &nbsp;
+    <i class="bi bi-tags-fill"></i><span class="badge text-bg-secondary">{{ blog.style }}</span>
+    <p class="my-3">
+        {{ blog.content }}
+    </p>
+    <p class="float-end">{{ blog.content | wordcount }} words</p>
+    {% if blog.photo %}
+        <img class="img-h-255" src="{{ blog.photo.url }}" alt="rasm">
+    {% else %}
+        <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top"
+             height="225"
+             preserveAspectRatio="xMidYMid slice" role="img" width="100%"
+             xmlns="http://www.w3.org/2000/svg">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#55595c"></rect>
+            <text x="35%" y="50%" fill="#eceeef" dy=".3em">{{ blog.title }}</text>
+        </svg>
+    {% endif %}
+    <p class="my-3"><i class="bi bi-calendar2-date"></i> {{ blog.created_at | date:"D d M Y" }}</p>
+
 
 {% endblock %}
+
