@@ -5,14 +5,16 @@ from django.contrib.auth.admin import UserAdmin
 from account.models import CustomUser, Profile
 
 
-class ProfileAdmin(TabularInline):
-    model = Profile
-
+# class ProfileAdmin(TabularInline):
+#     model = Profile
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['__str__']
 
 # Register your models here.
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    inlines = (ProfileAdmin,)
+    # inlines = (ProfileAdmin,)
     fieldsets = UserAdmin.fieldsets + (
         ("Additional info", {'fields': ('phone',)}),
     )

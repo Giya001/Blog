@@ -8,11 +8,11 @@ from django.db.models import Q
 
 @login_required
 def home(request):
-    blogs = Blog.objects.filter(published=True,author=request.user)
+    blogs = Blog.objects.filter(published=True)
     search_blog = request.GET.get('search_published_blog')
     if search_blog:
         blogs = Blog.objects.filter(Q(title__icontains=search_blog) | Q(content__icontains=search_blog),
-                                    published=True,author=request.user)
+                                    published=True)
     context = {
         'blogs': blogs
     }

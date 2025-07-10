@@ -20,7 +20,7 @@
                             <h4 class="mb-0">{{ user.get_full_name|default:user.username }}</h4>
                             <small>{{ user.email }}</small>
                             <div class="d-flex justify-content-end my-2">
-                                <a href="#" class="btn btn-outline-danger btn-sm">
+                                <a href="{% url 'change_profile' %}" class="btn btn-outline-danger btn-sm">
                                     <i class="bi bi-pencil-square me-1"></i> Edit Profile
                                 </a>
                             </div>
