@@ -4,6 +4,7 @@ from blog import views
 urlpatterns = [
     path('',views.home,name='home'),
     path('not_published/',views.home_out,name='home_out'),
+    path('myblog/',views.myblog,name='myblog'),
     path('create/',views.create,name='create'),
     path('<int:blog_id>/detail',views.detail,name='detail'),
     path('<int:blog_id>/update',views.update,name='update'),

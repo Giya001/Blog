@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -18,10 +19,21 @@ def home(request):
     }
     return render(request, 'blog/home.html', context=context)
 
+@login_required
+def myblog(request):
+    blogs = Blog.objects.filter(published=True,author=request.user)
+    search_blog = request.GET.get('search_published_blog')
+    if search_blog:
+        blogs = Blog.objects.filter(Q(title__icontains=search_blog) | Q(content__icontains=search_blog),
+                                    published=True,author=request.user)
+    context = {
+        'blogs': blogs
+    }
+    return render(request, 'blog/myblog.html', context=context)
 
 @login_required
 def home_out(request):
-    blogs = Blog.objects.filter(published=False)
+    blogs = Blog.objects.filter(published=False,author=request.user)
     search_blog = request.GET.get('search_unpublished_blog')
     if search_blog:
         blogs = Blog.objects.filter(Q(title__icontains=search_blog) | Q(content__icontains=search_blog),
@@ -61,6 +73,7 @@ def create(request):
         if form.is_valid():
             blog = form.save(commit=False)
             blog.author = request.user
+            messages.warning(request, 'Blog created successfully')
             blog.save()
             if blog.published:
                 return redirect('home')
@@ -76,5 +89,6 @@ def create(request):
 
 def delete(request, blog_id,):
     blog = get_object_or_404(Blog, id=blog_id,author=request.user)
+    messages.warning(request, 'Blog deleted successfully')
     blog.delete()
     return redirect('home')

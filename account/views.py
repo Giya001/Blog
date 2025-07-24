@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -13,6 +15,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             Profile.objects.create(user=user)
+            messages.success(request, 'Account created successfully')
             return redirect('login')
     else:
         form = CustomUserCreationForm()
@@ -29,10 +32,12 @@ def change_profile(request):
         user_form = CustomUserChangeForm(request.POST, instance=request.user)
         if not hasattr(request.user, 'profile'):
             Profile.objects.create(user=request.user)
+
         profile_form = ProfileChangeForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
+            messages.warning(request, 'Account changed successfully')
             profile_form.save()
         return redirect('profile')
 
@@ -47,3 +52,21 @@ def change_profile(request):
         'profile_form': profile_form
     }
     return render(request, 'account/change_profile.html', context=context)
+
+
+def test_send_mail(request):
+    subject = request.POST.get('subject')
+    message = request.POST.get('message')
+    email = request.POST.get('email')
+    if request.method == 'POST':
+        send_mail(
+            subject,
+            message,
+            'soxadev@gmail.com',
+            [email],
+            fail_silently=True,
+        )
+        return render(request,'mail/send_mail_success.html')
+
+    else:
+        return render(request, 'mail/send_mail.html')

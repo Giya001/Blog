@@ -1,5 +1,9 @@
+from http.client import HTTPResponse
+
+from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.http import HttpResponse
 
 from config.settings import AUTH_USER_MODEL
 
@@ -25,3 +29,5 @@ class Profile(models.Model):
 
     class Meta:
         db_table = 'auth_user_profile'
+
+
